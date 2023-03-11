@@ -19,17 +19,21 @@
 </template>
 
 <script>
+import getUser from '../composables/getUser';
+
 // firebase imports
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/config';
 
 export default {
   setup() {
+    const { user } = getUser();
+
     const handleClick = () => {
       signOut(auth);
     };
 
-    return { handleClick };
+    return { handleClick, user };
   },
 };
 </script>
