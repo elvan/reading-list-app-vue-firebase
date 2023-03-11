@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 import getUser from '../composables/getUser';
 
 // firebase imports
@@ -31,10 +33,17 @@ import { auth } from '../firebase/config';
 export default {
   setup() {
     const { user } = getUser();
+    const router = useRouter();
 
     const handleClick = () => {
       signOut(auth);
     };
+
+    watchEffect(() => {
+      if (!user.value) {
+        router.push('/login');
+      }
+    });
 
     return { handleClick, user };
   },
