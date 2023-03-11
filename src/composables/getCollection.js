@@ -1,14 +1,19 @@
 import { ref, watchEffect } from 'vue';
 
 // firebase imports
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
-const getCollection = (c) => {
+const getCollection = (c, q) => {
   const documents = ref(null);
 
   // collection reference
   let colRef = collection(db, c);
+
+  if (q) {
+    console.log(...q);
+    colRef = query(colRef, where(...q));
+  }
 
   const unsub = onSnapshot(colRef, (snapshot) => {
     let results = [];
